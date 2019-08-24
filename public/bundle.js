@@ -39949,6 +39949,10 @@ var _axios = __webpack_require__(358);
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _reactRedux = __webpack_require__(394);
+
+var _store = __webpack_require__(418);
+
 var _StudentList = __webpack_require__(377);
 
 var _StudentList2 = _interopRequireDefault(_StudentList);
@@ -39963,13 +39967,13 @@ var _NewStudentForm2 = _interopRequireDefault(_NewStudentForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//redux imports
+
 
 var Main = function (_Component) {
   _inherits(Main, _Component);
@@ -39980,7 +39984,6 @@ var Main = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.state = {
-      students: [],
       selectedStudent: {},
       showForm: false
     };
@@ -39992,51 +39995,20 @@ var Main = function (_Component) {
   _createClass(Main, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.getStudents();
+      // this.getStudents();
+      this.props.fetchStudents();
     }
-  }, {
-    key: 'getStudents',
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-        var _ref2, data;
 
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                console.log('fetching');
-                _context.prev = 1;
-                _context.next = 4;
-                return _axios2.default.get('/student');
+    //   async getStudents() {
+    //     console.log('fetching');
+    //     try {
+    //       const { data } = await axios.get('/student');
+    //       this.setState({ students: data });
+    //     } catch (err) {
+    //       console.error(err);
+    //     }
+    //   }
 
-              case 4:
-                _ref2 = _context.sent;
-                data = _ref2.data;
-
-                this.setState({ students: data });
-                _context.next = 12;
-                break;
-
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context['catch'](1);
-
-                console.error(_context.t0);
-
-              case 12:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this, [[1, 9]]);
-      }));
-
-      function getStudents() {
-        return _ref.apply(this, arguments);
-      }
-
-      return getStudents;
-    }()
   }, {
     key: 'selectStudent',
     value: function selectStudent(student) {
@@ -40056,6 +40028,7 @@ var Main = function (_Component) {
     value: function render() {
       var _this2 = this;
 
+      console.log(this.props);
       return _react2.default.createElement(
         'div',
         null,
@@ -40086,7 +40059,7 @@ var Main = function (_Component) {
             )
           ),
           _react2.default.createElement(_StudentList2.default, {
-            students: this.state.students,
+            students: this.props.students,
             selectStudent: this.selectStudent
           })
         ),
@@ -40106,7 +40079,21 @@ var Main = function (_Component) {
   return Main;
 }(_react.Component);
 
-exports.default = Main;
+var mapStateToProps = function mapStateToProps(state) {
+  console.log(state);
+  return {
+    students: state.students
+  };
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    fetchStudents: function fetchStudents() {
+      return dispatch((0, _store.fetchStudents)());
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Main);
 
 /***/ }),
 /* 358 */
@@ -44682,6 +44669,9 @@ function useSelector(selector, equalityFn) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.fetchStudents = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _redux = __webpack_require__(406);
 
@@ -44695,27 +44685,114 @@ var _reduxDevtoolsExtension = __webpack_require__(421);
 
 var _reactDom = __webpack_require__(349);
 
+var _axios = __webpack_require__(358);
+
+var _axios2 = _interopRequireDefault(_axios);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//we only have one state so we don't need to combine reducers
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//we only have one state so we don't need to combine reducers, hopefully?
 var initalState = {
-    student: {}
+    students: [],
+    selectedStudent: {}
+
     //action constants
-};var ADD_NEW_STUDENT = 'ADD_NEW_STUDENT';
-var UPDATE_STUDENTS = 'UPDATE_STUDENTS';
+};var GET_STUDENTS = 'GET_STUDENTS';
+var ADD_NEW_STUDENT = 'ADD_NEW_STUDENT';
+var UPDATE_STUDENTS = 'UPDATE_STUDENTS'; //not sure if needed
+var SELECT_STUDENT = 'SELECT_STUDENT';
 //action creators
+//populates state with students from database, yeet
+var getStudents = function getStudents(students) {
+    return {
+        type: GET_STUDENTS,
+        students: students
+    };
+};
+//when user submits a new student from form
 var addNewStudentFromClient = function addNewStudentFromClient(newStudent) {
     return {
         type: ADD_NEW_STUDENT,
         newStudent: newStudent
     };
 };
+//when user clicks on student to see details
+var selectStudent = function selectStudent(selectedStudent) {
+    return {
+        type: SELECT_STUDENT,
+        selectStudent: selectStudent
+    };
+};
+//Thunks
+//fetch all students from DB
+var fetchStudents = exports.fetchStudents = function fetchStudents() {
+    return function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(dispatch) {
+            var _ref2, data, students;
+
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            _context.prev = 0;
+                            _context.next = 3;
+                            return _axios2.default.get('/student');
+
+                        case 3:
+                            _ref2 = _context.sent;
+                            data = _ref2.data;
+
+                            console.log('this is the data:', data);
+                            students = data;
+
+                            dispatch(getStudents(students));
+                            _context.next = 13;
+                            break;
+
+                        case 10:
+                            _context.prev = 10;
+                            _context.t0 = _context['catch'](0);
+
+                            console.log(_context.t0);
+
+                        case 13:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, undefined, [[0, 10]]);
+        }));
+
+        return function (_x) {
+            return _ref.apply(this, arguments);
+        };
+    }();
+};
 
 //Reducer
 var reducer = function reducer() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initalState;
     var action = arguments[1];
+
+    switch (action.type) {
+        case ADD_NEW_STUDENT:
+            return _extends({}, state, { students: [].concat(_toConsumableArray(state.students), [action.newStudent])
+            });
+        case GET_STUDENTS:
+            return _extends({}, state, { students: action.students
+            });
+        default:
+            return state;
+    }
 };
+//
+
+
+//Setting up the store and connect stuff
 
 var middleware = (0, _reduxDevtoolsExtension.composeWithDevTools)((0, _redux.applyMiddleware)(_reduxThunk2.default, (0, _reduxLogger.createLogger)({ collapsed: true })));
 
