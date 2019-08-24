@@ -32,10 +32,10 @@ const addNewStudentFromClient = (newStudent) =>{
     }
 }
 //when user clicks on student to see details
-const selectStudent = (selectedStudent) => {
+export const selectStudent = (selectedStudent) => {
     return {
         type: SELECT_STUDENT,
-        selectStudent
+        selectedStudent
     }
 }
 //Thunks
@@ -63,6 +63,10 @@ const reducer = (state = initalState, action) => {
         case GET_STUDENTS:
             return{
                 ...state, students: action.students
+            }
+        case SELECT_STUDENT:
+            return{
+                ...state, selectedStudent: action.selectedStudent
             }
         default:
             return state;

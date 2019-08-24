@@ -12,11 +12,9 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        selectedStudent: {},
         showForm: false
     };
 
-    this.selectStudent = this.selectStudent.bind(this);
   }
 
   componentDidMount() {
@@ -24,25 +22,11 @@ class Main extends Component {
     this.props.fetchStudents();
   }
 
-//   async getStudents() {
-//     console.log('fetching');
-//     try {
-//       const { data } = await axios.get('/student');
-//       this.setState({ students: data });
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   }
-
-  selectStudent(student) {
-    return this.setState({
-      selectedStudent: student,
-    });
-  }
   clickHandler() {
+      let hidden = this.state.showForm;
       this.setState({
-          showForm: true
-      })
+          showForm : !hidden
+      });
   }
 
   render() {
@@ -58,14 +42,12 @@ class Main extends Component {
             </tr>
           </thead>
           <StudentList
-            students={this.props.students}
-            selectStudent={this.selectStudent}
           />
         </table>
         <button type="button" className="btn btn-info" onClick={()=>this.clickHandler()}>Add New Student</button>
-        {this.state.showForm? <NewStudentFrom />: <div></div>}
-        {this.state.selectedStudent.id ? (
-          <SingleStudent student={this.state.selectedStudent} />
+        {this.state.showForm && <NewStudentFrom />} 
+        {this.props.selectedStudent.id ? (
+          <SingleStudent student={this.props.selectedStudent} />
         ) : null}
       </div>
     );
@@ -74,7 +56,8 @@ class Main extends Component {
 const mapStateToProps = (state)=>{
     console.log(state);
     return{
-        students: state.students
+        students: state.students,
+        selectedStudent: state.selectedStudent
     }
 }
 const mapDispatchToProps = (dispatch)=>{

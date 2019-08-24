@@ -39984,11 +39984,9 @@ var Main = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 
     _this.state = {
-      selectedStudent: {},
       showForm: false
     };
 
-    _this.selectStudent = _this.selectStudent.bind(_this);
     return _this;
   }
 
@@ -39998,29 +39996,12 @@ var Main = function (_Component) {
       // this.getStudents();
       this.props.fetchStudents();
     }
-
-    //   async getStudents() {
-    //     console.log('fetching');
-    //     try {
-    //       const { data } = await axios.get('/student');
-    //       this.setState({ students: data });
-    //     } catch (err) {
-    //       console.error(err);
-    //     }
-    //   }
-
-  }, {
-    key: 'selectStudent',
-    value: function selectStudent(student) {
-      return this.setState({
-        selectedStudent: student
-      });
-    }
   }, {
     key: 'clickHandler',
     value: function clickHandler() {
+      var hidden = this.state.showForm;
       this.setState({
-        showForm: true
+        showForm: !hidden
       });
     }
   }, {
@@ -40058,10 +40039,7 @@ var Main = function (_Component) {
               )
             )
           ),
-          _react2.default.createElement(_StudentList2.default, {
-            students: this.props.students,
-            selectStudent: this.selectStudent
-          })
+          _react2.default.createElement(_StudentList2.default, null)
         ),
         _react2.default.createElement(
           'button',
@@ -40070,8 +40048,8 @@ var Main = function (_Component) {
             } },
           'Add New Student'
         ),
-        this.state.showForm ? _react2.default.createElement(_NewStudentForm2.default, null) : _react2.default.createElement('div', null),
-        this.state.selectedStudent.id ? _react2.default.createElement(_SingleStudent2.default, { student: this.state.selectedStudent }) : null
+        this.state.showForm && _react2.default.createElement(_NewStudentForm2.default, null),
+        this.props.selectedStudent.id ? _react2.default.createElement(_SingleStudent2.default, { student: this.props.selectedStudent }) : null
       );
     }
   }]);
@@ -40082,7 +40060,8 @@ var Main = function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   console.log(state);
   return {
-    students: state.students
+    students: state.students,
+    selectedStudent: state.selectedStudent
   };
 };
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
@@ -41000,35 +40979,50 @@ var _react = __webpack_require__(49);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = __webpack_require__(394);
+
+var _store = __webpack_require__(418);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var StudentList = function StudentList(props) {
     console.log("p", props);
     return _react2.default.createElement(
-        "tbody",
+        'tbody',
         null,
         props.students.map(function (student) {
             return _react2.default.createElement(
-                "tr",
+                'tr',
                 { key: student.id },
                 _react2.default.createElement(
-                    "td",
+                    'td',
                     null,
                     student.fullName
                 ),
                 _react2.default.createElement(
-                    "td",
+                    'td',
                     { onClick: function onClick() {
                             return props.selectStudent(student);
                         } },
-                    "Details"
+                    'Details'
                 )
             );
         })
     );
 };
-
-exports.default = StudentList;
+var mapStateToProps = function mapStateToProps(state) {
+    return {
+        students: state.students
+    };
+};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        selectStudent: function selectStudent(student) {
+            return dispatch((0, _store.selectStudent)(student));
+        }
+    };
+};
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(StudentList);
 
 /***/ }),
 /* 378 */
@@ -41059,7 +41053,7 @@ var SingleStudent = function SingleStudent(props) {
     console.log('ppp', props);
     return _react2.default.createElement(
         'div',
-        null,
+        { id: 'card-body' },
         _react2.default.createElement(
             'h3',
             null,
@@ -44669,7 +44663,7 @@ function useSelector(selector, equalityFn) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.fetchStudents = undefined;
+exports.fetchStudents = exports.selectStudent = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -44721,10 +44715,10 @@ var addNewStudentFromClient = function addNewStudentFromClient(newStudent) {
     };
 };
 //when user clicks on student to see details
-var selectStudent = function selectStudent(selectedStudent) {
+var selectStudent = exports.selectStudent = function selectStudent(selectedStudent) {
     return {
         type: SELECT_STUDENT,
-        selectStudent: selectStudent
+        selectedStudent: selectedStudent
     };
 };
 //Thunks
@@ -44784,6 +44778,9 @@ var reducer = function reducer() {
             });
         case GET_STUDENTS:
             return _extends({}, state, { students: action.students
+            });
+        case SELECT_STUDENT:
+            return _extends({}, state, { selectedStudent: action.selectedStudent
             });
         default:
             return state;

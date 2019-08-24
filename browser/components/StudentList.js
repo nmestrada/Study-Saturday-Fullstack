@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {selectStudent} from '../../store'
 
 const StudentList = (props) => {
     console.log("p", props)
@@ -22,5 +24,14 @@ const StudentList = (props) => {
         </tbody>
     )
 }
-
-export default StudentList
+const mapStateToProps = (state) =>{
+    return{
+        students: state.students
+    }
+}
+const mapDispatchToProps =(dispatch)=>{
+    return{
+        selectStudent: (student)=>dispatch(selectStudent(student))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
