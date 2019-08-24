@@ -10,19 +10,22 @@ class NewStudentForm extends Component {
             email: ''
         }
     }
-    handleChange(event) {
+    handleChange = (event) => {
         //update the state with input fields
         this.setState({
             [event.target.name]: event.target.value
         });
+        console.log('In handle change:',this.state)
     }
-    async handleSubmit() {
+    handleSubmit = async ()=>{
         //clear inputs and make axios post to database, hence post in first part!!!!!
+        console.log('before post req')
         try {
-            await axios.post('/', this.state);
+            await axios.post('/student', this.state);
         }catch(err){
             console.log(err.message);
         }
+        console.log(this.state)
         this.setState({
             firstName: '',
             lastName: '',
@@ -31,7 +34,7 @@ class NewStudentForm extends Component {
     }
     render(){
      return (
-            <form>
+            <form onSubmit={()=>this.handleSubmit()}>
             <div className="form-group">
 			<label htmlFor='firstName'>
                     First Name:
@@ -68,7 +71,7 @@ class NewStudentForm extends Component {
 			<button
                 type='submit'
                 className="btn btn-primary"
-				disabled= {true}>Submit
+				>Submit
             </button>
 		</form>
         );

@@ -46,7 +46,7 @@ export default class Main extends Component {
     return (
       <div>
         <h1>Students</h1>
-        <table>
+        <table className='table'>
           <thead>
             <tr>
               <th>Name</th>
@@ -58,7 +58,7 @@ export default class Main extends Component {
             selectStudent={this.selectStudent}
           />
         </table>
-        <button type="button" onClick={()=>this.clickHandler()}>Add New Student</button>
+        <button type="button" className="btn btn-info" onClick={()=>this.clickHandler()}>Add New Student</button>
         {this.state.showForm? <NewStudentFrom />: <div></div>}
         {this.state.selectedStudent.id ? (
           <SingleStudent student={this.state.selectedStudent} />

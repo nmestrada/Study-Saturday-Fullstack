@@ -40051,7 +40051,7 @@ var Main = function (_Component) {
         ),
         _react2.default.createElement(
           'table',
-          null,
+          { className: 'table' },
           _react2.default.createElement(
             'thead',
             null,
@@ -40077,7 +40077,7 @@ var Main = function (_Component) {
         ),
         _react2.default.createElement(
           'button',
-          { type: 'button', onClick: function onClick() {
+          { type: 'button', className: 'btn btn-info', onClick: function onClick() {
               return _this2.clickHandler();
             } },
           'Add New Student'
@@ -41155,9 +41155,54 @@ var NewStudentForm = function (_Component) {
     _inherits(NewStudentForm, _Component);
 
     function NewStudentForm() {
+        var _this2 = this;
+
         _classCallCheck(this, NewStudentForm);
 
         var _this = _possibleConstructorReturn(this, (NewStudentForm.__proto__ || Object.getPrototypeOf(NewStudentForm)).call(this));
+
+        _this.handleChange = function (event) {
+            //update the state with input fields
+            _this.setState(_defineProperty({}, event.target.name, event.target.value));
+            console.log('In handle change:', _this.state);
+        };
+
+        _this.handleSubmit = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            //clear inputs and make axios post to database, hence post in first part!!!!!
+                            console.log('before post req');
+                            _context.prev = 1;
+                            _context.next = 4;
+                            return _axios2.default.post('/student', _this.state);
+
+                        case 4:
+                            _context.next = 9;
+                            break;
+
+                        case 6:
+                            _context.prev = 6;
+                            _context.t0 = _context['catch'](1);
+
+                            console.log(_context.t0.message);
+
+                        case 9:
+                            console.log(_this.state);
+                            _this.setState({
+                                firstName: '',
+                                lastName: '',
+                                email: ''
+                            });
+
+                        case 11:
+                        case 'end':
+                            return _context.stop();
+                    }
+                }
+            }, _callee, _this2, [[1, 6]]);
+        }));
 
         _this.state = {
             firstName: '',
@@ -41168,60 +41213,15 @@ var NewStudentForm = function (_Component) {
     }
 
     _createClass(NewStudentForm, [{
-        key: 'handleChange',
-        value: function handleChange(event) {
-            //update the state with input fields
-            this.setState(_defineProperty({}, event.target.name, event.target.value));
-        }
-    }, {
-        key: 'handleSubmit',
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.prev = 0;
-                                _context.next = 3;
-                                return _axios2.default.post('/', this.state);
-
-                            case 3:
-                                _context.next = 8;
-                                break;
-
-                            case 5:
-                                _context.prev = 5;
-                                _context.t0 = _context['catch'](0);
-
-                                console.log(_context.t0.message);
-
-                            case 8:
-                                this.setState({
-                                    firstName: '',
-                                    lastName: '',
-                                    email: ''
-                                });
-
-                            case 9:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this, [[0, 5]]);
-            }));
-
-            function handleSubmit() {
-                return _ref.apply(this, arguments);
-            }
-
-            return handleSubmit;
-        }()
-    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             return _react2.default.createElement(
                 'form',
-                null,
+                { onSubmit: function onSubmit() {
+                        return _this3.handleSubmit();
+                    } },
                 _react2.default.createElement(
                     'div',
                     { className: 'form-group' },
@@ -41271,8 +41271,8 @@ var NewStudentForm = function (_Component) {
                     'button',
                     {
                         type: 'submit',
-                        className: 'btn btn-primary',
-                        disabled: true },
+                        className: 'btn btn-primary'
+                    },
                     'Submit'
                 )
             );
