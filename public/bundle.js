@@ -39942,6 +39942,10 @@ var _SingleStudent = __webpack_require__(378);
 
 var _SingleStudent2 = _interopRequireDefault(_SingleStudent);
 
+var _NewStudentForm = __webpack_require__(379);
+
+var _NewStudentForm2 = _interopRequireDefault(_NewStudentForm);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -39962,7 +39966,8 @@ var Main = function (_Component) {
 
     _this.state = {
       students: [],
-      selectedStudent: {}
+      selectedStudent: {},
+      showForm: false
     };
 
     _this.selectStudent = _this.selectStudent.bind(_this);
@@ -40025,8 +40030,17 @@ var Main = function (_Component) {
       });
     }
   }, {
+    key: 'clickHandler',
+    value: function clickHandler() {
+      this.setState({
+        showForm: true
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       return _react2.default.createElement(
         'div',
         null,
@@ -40061,6 +40075,14 @@ var Main = function (_Component) {
             selectStudent: this.selectStudent
           })
         ),
+        _react2.default.createElement(
+          'button',
+          { type: 'button', onClick: function onClick() {
+              return _this2.clickHandler();
+            } },
+          'Add New Student'
+        ),
+        this.state.showForm ? _react2.default.createElement(_NewStudentForm2.default, null) : _react2.default.createElement('div', null),
         this.state.selectedStudent.id ? _react2.default.createElement(_SingleStudent2.default, { student: this.state.selectedStudent }) : null
       );
     }
@@ -41099,6 +41121,124 @@ var SingleStudent = function SingleStudent(props) {
 };
 
 exports.default = SingleStudent;
+
+/***/ }),
+/* 379 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(49);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var NewStudentForm = function (_Component) {
+    _inherits(NewStudentForm, _Component);
+
+    function NewStudentForm() {
+        _classCallCheck(this, NewStudentForm);
+
+        var _this = _possibleConstructorReturn(this, (NewStudentForm.__proto__ || Object.getPrototypeOf(NewStudentForm)).call(this));
+
+        _this.state = {
+            firstName: '',
+            lastName: '',
+            email: ''
+        };
+        return _this;
+    }
+
+    _createClass(NewStudentForm, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            //update the state with input fields
+            this.setState(_defineProperty({}, event.target.name, event.target.value));
+        }
+    }, {
+        key: 'handleSubmit',
+        value: function handleSubmit() {
+            //clear inputs and make axios post to database, hence post in first part!!!!!
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'form',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'form-group' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'firstName' },
+                        'First Name:'
+                    ),
+                    _react2.default.createElement('input', {
+                        onChange: this.handleChange,
+                        type: 'text',
+                        name: 'firstName',
+                        value: this.state.firstName
+                    })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'form-group' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'lastName' },
+                        'Last Name:'
+                    ),
+                    _react2.default.createElement('input', {
+                        onChange: this.handleChange,
+                        type: 'text',
+                        name: 'lastName',
+                        value: this.state.lastName
+                    })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'form-group' },
+                    _react2.default.createElement(
+                        'label',
+                        { htmlFor: 'email' },
+                        'Email:'
+                    ),
+                    _react2.default.createElement('input', {
+                        onChange: this.handleChange,
+                        type: 'email',
+                        name: 'email',
+                        value: this.state.email
+                    })
+                ),
+                _react2.default.createElement(
+                    'button',
+                    {
+                        type: 'submit',
+                        className: 'btn btn-primary',
+                        disabled: true },
+                    'Submit'
+                )
+            );
+        }
+    }]);
+
+    return NewStudentForm;
+}(_react.Component);
+
+module.exports = NewStudentForm;
 
 /***/ })
 /******/ ]);

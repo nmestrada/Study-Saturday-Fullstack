@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import StudentList from './StudentList.js';
 import SingleStudent from './SingleStudent.js';
+import NewStudentFrom from './NewStudentForm';
 
 export default class Main extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class Main extends Component {
     this.state = {
       students: [],
       selectedStudent: {},
+      showForm: false
     };
 
     this.selectStudent = this.selectStudent.bind(this);
@@ -34,6 +36,11 @@ export default class Main extends Component {
       selectedStudent: student,
     });
   }
+  clickHandler() {
+      this.setState({
+          showForm: true
+      })
+  }
 
   render() {
     return (
@@ -51,6 +58,8 @@ export default class Main extends Component {
             selectStudent={this.selectStudent}
           />
         </table>
+        <button type="button" onClick={()=>this.clickHandler()}>Add New Student</button>
+        {this.state.showForm? <NewStudentFrom />: <div></div>}
         {this.state.selectedStudent.id ? (
           <SingleStudent student={this.state.selectedStudent} />
         ) : null}
