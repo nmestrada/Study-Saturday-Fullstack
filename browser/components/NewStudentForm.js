@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 class NewStudentForm extends Component {
     constructor(){
@@ -13,10 +14,20 @@ class NewStudentForm extends Component {
         //update the state with input fields
         this.setState({
             [event.target.name]: event.target.value
-        })
+        });
     }
-    handleSubmit() {
+    async handleSubmit() {
         //clear inputs and make axios post to database, hence post in first part!!!!!
+        try {
+            await axios.post('/', this.state);
+        }catch(err){
+            console.log(err.message);
+        }
+        this.setState({
+            firstName: '',
+            lastName: '',
+            email: ''
+        });
     }
     render(){
      return (
