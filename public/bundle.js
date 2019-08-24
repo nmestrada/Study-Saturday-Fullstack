@@ -41053,10 +41053,10 @@ var SingleStudent = function SingleStudent(props) {
     console.log('ppp', props);
     return _react2.default.createElement(
         'div',
-        { id: 'card-body' },
+        { className: 'card-body' },
         _react2.default.createElement(
             'h3',
-            null,
+            { className: 'card-title' },
             props.student.fullName
         ),
         _react2.default.createElement(
@@ -41071,7 +41071,7 @@ var SingleStudent = function SingleStudent(props) {
             null,
             _react2.default.createElement(
                 'table',
-                null,
+                { className: 'table' },
                 _react2.default.createElement(
                     'thead',
                     null,

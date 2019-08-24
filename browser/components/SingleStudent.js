@@ -10,11 +10,11 @@ const avgGrade = tests => {
 
 const SingleStudent = (props) => {
     console.log('ppp', props)
-   return ( <div id='card-body'>
-        <h3>{props.student.fullName}</h3>
+   return ( <div className='card-body'>
+        <h3 className='card-title'>{props.student.fullName}</h3>
         <h3>Average grade: {avgGrade(props.student.tests)}%</h3>
         <div>
-            <table>
+            <table className='table'>
                 <thead>
                     <tr>
                         <th>Subject</th>
