@@ -14,4 +14,7 @@ html {
     align-items: center;
     flex-direction: column;
   }
+  form{
+      margin-top: 2em;
+  }
   

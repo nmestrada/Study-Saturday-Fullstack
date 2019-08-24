@@ -47,7 +47,7 @@ export default class Main extends Component {
       <div>
         <h1>Students</h1>
         <table className='table'>
-          <thead>
+          <thead className="thead-dark">
             <tr>
               <th>Name</th>
               <th>Tests</th>

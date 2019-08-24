@@ -40,6 +40,7 @@ class NewStudentForm extends Component {
                     First Name:
                 </label>
                 <input
+                    className="form-control"
                     onChange= {this.handleChange}
                     type='text'
                     name='firstName'
@@ -51,6 +52,7 @@ class NewStudentForm extends Component {
                     Last Name:
                 </label>
                 <input
+                    className="form-control"
                     onChange= {this.handleChange}
                     type='text'
                     name='lastName'
@@ -62,6 +64,7 @@ class NewStudentForm extends Component {
                     Email:
                 </label>
                 <input
+                    className="form-control"
                     onChange= {this.handleChange}
                     type='email'
                     name='email'
